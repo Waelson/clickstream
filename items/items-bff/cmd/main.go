@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -10,7 +12,7 @@ type Item struct {
 	ID         string `json:"id"`
 	Name       string `json:"name"`
 	CampaignID string `json:"campaignId"`
-	ImageURL   string `json:"imageUrl"` // Novo campo
+	ImageURL   string `json:"imageUrl"`
 }
 
 var items = []Item{
@@ -37,24 +39,36 @@ func enableCORS(next http.Handler) http.Handler {
 	})
 }
 
+const clickstreamAPI = "http://localhost:4000/api/click"
+
 func main() {
 	// Criação de um roteador
 	mux := http.NewServeMux()
 
-	// Rotas principais
+	// Rota para retornar itens
 	mux.HandleFunc("/api/items", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(items)
 	})
 
+	// Rota para registrar cliques
 	mux.HandleFunc("/api/click", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Evento de clique recebido")
 		var click map[string]string
 		if err := json.NewDecoder(r.Body).Decode(&click); err != nil {
 			http.Error(w, "Invalid request", http.StatusBadRequest)
 			return
 		}
-		log.Printf("Click registered: %v", click)
-		w.WriteHeader(http.StatusNoContent)
+
+		// Encaminha o evento para o clickstream-api
+		if err := forwardToClickstreamAPI(click); err != nil {
+			log.Printf("Failed to forward click event: %v", err)
+			http.Error(w, "Failed to register click event", http.StatusInternalServerError)
+			return
+		} else {
+			log.Printf("Click registered and forwarded: %v", click)
+			w.WriteHeader(http.StatusNoContent)
+		}
 	})
 
 	// Adiciona o middleware de CORS ao roteador
@@ -64,4 +78,27 @@ func main() {
 	port := ":3000"
 	log.Printf("items-bff running on http://localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, handler))
+}
+
+// Função para encaminhar o evento ao clickstream-api
+func forwardToClickstreamAPI(click map[string]string) error {
+	// Serializa o evento como JSON
+	data, err := json.Marshal(click)
+	if err != nil {
+		return err
+	}
+
+	// Faz a requisição POST ao clickstream-api
+	resp, err := http.Post(clickstreamAPI, "application/json", bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Verifica se a resposta foi bem-sucedida
+	if resp.StatusCode != http.StatusNoContent {
+		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+
+	return nil
 }

@@ -155,10 +155,12 @@
 
     async function sendClick(itemId, campaignId) {
         try {
+            body = JSON.stringify({ itemId, campaignId })
+            console.log(body)
             await fetch(`${BFF_API_BASE}/api/click`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ itemId, campaignId })
+                body: body
             });
             alert(`Click registered for item: ${itemId}`);
         } catch (error) {
