@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items Store</title>
+    <style>
+        /* Estilo Global */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .item-card:hover {
+            transform: scale(1.03);
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .item-content {
+            padding: 15px;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            margin: 0 0 10px;
+            color: #007BFF;
+        }
+
+        .item-campaign {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .item-button {
+            display: inline-block;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .item-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Items Store</h1>
+    <p>Explore and interact with the available items</p>
+</header>
+
+<div class="container">
+    <div class="item-grid" id="items-list">
+        <!-- Os itens serão carregados aqui dinamicamente -->
+    </div>
+</div>
+
+<script>
+    const BFF_API_BASE = "http://localhost:3000"; // URL da items-bff
+
+    async function loadItems() {
+        try {
+            const response = await fetch(`${BFF_API_BASE}/api/items`);
+            const items = await response.json();
+            const grid = document.getElementById('items-list');
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('item-card');
+
+                const imageDiv = document.createElement('div');
+                imageDiv.classList.add('item-image');
+                const image = document.createElement('img');
+                image.src = item.imageUrl;
+                image.alt = item.name;
+                imageDiv.appendChild(image);
+
+                const content = document.createElement('div');
+                content.classList.add('item-content');
+
+                const title = document.createElement('h2');
+                title.classList.add('item-title');
+                title.textContent = item.name;
+
+                const campaign = document.createElement('p');
+                campaign.classList.add('item-campaign');
+                campaign.textContent = `Campaign: ${item.campaignId}`;
+
+                const button = document.createElement('button');
+                button.classList.add('item-button');
+                button.textContent = 'Click Me';
+                button.onclick = () => sendClick(item.id, item.campaignId);
+
+                content.appendChild(title);
+                content.appendChild(campaign);
+                content.appendChild(button);
+
+                card.appendChild(imageDiv);
+                card.appendChild(content);
+                grid.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Failed to load items:", error);
+            alert("Failed to load items from BFF.");
+        }
+    }
+
+    async function sendClick(itemId, campaignId) {
+        try {
+            await fetch(`${BFF_API_BASE}/api/click`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ itemId, campaignId })
+            });
+            alert(`Click registered for item: ${itemId}`);
+        } catch (error) {
+            console.error("Failed to send click:", error);
+            alert("Failed to register click.");
+        }
+    }
+
+    loadItems();
+</script>
+</body>
+</html>
