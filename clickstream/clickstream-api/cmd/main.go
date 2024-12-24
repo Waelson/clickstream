@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	brokerAddress = "localhost:9092" // Endereço do Kafka Broker
-	topic         = "click_events"   // Tópico para eventos de clique
+	brokerAddress = "localhost:29092" // Endereço do Kafka Broker
+	topic         = "click_events"    // Tópico para eventos de clique
 )
 
 // Estrutura do evento de clique
