@@ -4,9 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Waelson/clickstream/clickstream-processor/internal/util"
+	"github.com/go-chi/chi/v5"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -52,6 +56,11 @@ func initializeKSQLObjects() {
 
 // Executa uma query no KSQLDB
 func executeKSQLQuery(query string) error {
+	ksqlServer := os.Getenv("URL_KSQL")
+	if ksqlServer == "" {
+		ksqlServer = ksqlDBURL
+	}
+
 	body := map[string]interface{}{
 		"ksql":              query,
 		"streamsProperties": map[string]interface{}{},
@@ -61,7 +70,7 @@ func executeKSQLQuery(query string) error {
 		return fmt.Errorf("failed to marshal KSQL query: %v", err)
 	}
 
-	resp, err := http.Post(fmt.Sprintf("%s/ksql", ksqlDBURL), "application/json", bytes.NewBuffer(data))
+	resp, err := http.Post(fmt.Sprintf("%s/ksql", ksqlServer), "application/json", bytes.NewBuffer(data))
 	if err != nil {
 		return fmt.Errorf("failed to send KSQL query: %v", err)
 	}
@@ -85,11 +94,17 @@ type CampaignMetrics struct {
 
 // Consulta periódica ao KSQLDB
 func queryKSQLDB() ([]CampaignMetrics, error) {
+
+	ksqlServer := os.Getenv("URL_KSQL")
+	if ksqlServer == "" {
+		ksqlServer = ksqlDBURL
+	}
+
 	query := `{
 		"ksql": "SELECT campaignId, click_count, window_start, window_end FROM click_counts_table EMIT CHANGES LIMIT 10;"
 	}`
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/query", ksqlDBURL), bytes.NewBuffer([]byte(query)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/query", ksqlServer), bytes.NewBuffer([]byte(query)))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create KSQL request: %v", err)
 	}
@@ -147,14 +162,18 @@ func queryKSQLDBWithRetries() []CampaignMetrics {
 	}
 }
 
-func main() {
-	log.Println("Starting clickstream-processor")
+func collectMetrics() {
+	log.Println("Starting metrics collector")
 
 	// Inicializa o stream e a tabela no KSQLDB
 	initializeKSQLObjects()
 
+	metricsRecord := util.NewMetricsRecord()
+
 	for {
 		log.Println("Waiting for metrics")
+
+		metricsRecord.ResetGaugeFeatureFlag()
 
 		// Consulta o KSQLDB com resiliência
 		metrics := queryKSQLDBWithRetries()
@@ -168,10 +187,29 @@ func main() {
 				metric.WindowStart,
 				metric.WindowEnd,
 			)
-			// Enviar para Grafana, ElasticSearch ou outros sistemas
+
+			// Envia as metricas para Grafana
+			metricsRecord.WithLabelValues(metric.CampaignID, metric.CampaignID, float64(metric.ClickCount))
+
 		}
 
 		// Aguardar até a próxima janela de tempo (2 minutos neste caso)
 		time.Sleep(1 * time.Minute)
 	}
+}
+
+func main() {
+	r := chi.NewRouter()
+
+	//Expoe as metricas para o Grafana fazer as raspagem das metricas
+	r.Handle("/metrics", promhttp.Handler())
+
+	port := ":8081"
+	log.Printf("clickstream-processor running on http://localhost%s", port)
+
+	//Roda em segundo plano para coletar as metricas do KSQL
+	go collectMetrics()
+
+	log.Fatal(http.ListenAndServe(port, r))
+
 }

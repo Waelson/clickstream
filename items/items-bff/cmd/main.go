@@ -16,10 +16,12 @@ type Item struct {
 }
 
 var items = []Item{
-	{ID: "1", Name: "Item A", CampaignID: "promo1", ImageURL: "https://via.placeholder.com/200?text=Item+A"},
-	{ID: "2", Name: "Item B", CampaignID: "promo1", ImageURL: "https://via.placeholder.com/200?text=Item+B"},
-	{ID: "3", Name: "Item C", CampaignID: "promo2", ImageURL: "https://via.placeholder.com/200?text=Item+C"},
-	{ID: "4", Name: "Item D", CampaignID: "promo2", ImageURL: "https://via.placeholder.com/200?text=Item+D"},
+	{ID: "1", Name: "Item A", CampaignID: "promocao-natal", ImageURL: "https://via.placeholder.com/200?text=Item+A"},
+	{ID: "2", Name: "Item B", CampaignID: "promocao-natal", ImageURL: "https://via.placeholder.com/200?text=Item+B"},
+	{ID: "3", Name: "Item C", CampaignID: "promocao-natal", ImageURL: "https://via.placeholder.com/200?text=Item+C"},
+	{ID: "4", Name: "Item D", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+D"},
+	{ID: "5", Name: "Item E", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+E"},
+	{ID: "6", Name: "Item F", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+F"},
 }
 
 // Middleware para habilitar CORS

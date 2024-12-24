@@ -89,9 +89,40 @@
         .item-button:hover {
             background-color: #0056b3;
         }
+
+
+        /* Toast Container */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: coral;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fade-in-out 3s ease;
+        }
+
+        /* Animation */
+        @keyframes fade-in-out {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
     </style>
 </head>
 <body>
+<div id="toast-container"></div>
 <header>
     <h1>Items Store</h1>
     <p>Explore and interact with the available items</p>
@@ -155,6 +186,7 @@
 
     async function sendClick(itemId, campaignId) {
         try {
+            showToast(`Click registered for item: ${itemId}`);
             body = JSON.stringify({ itemId, campaignId })
             console.log(body)
             await fetch(`${BFF_API_BASE}/api/click`, {
@@ -162,11 +194,25 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: body
             });
-            //alert(`Click registered for item: ${itemId}`);
         } catch (error) {
             console.error("Failed to send click:", error);
             alert("Failed to register click.");
         }
+    }
+
+    function showToast(message) {
+        const toastContainer = document.getElementById('toast-container');
+
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove o toast após a animação (3s)
+        setTimeout(() => {
+            toastContainer.removeChild(toast);
+        }, 3000);
     }
 
     loadItems();
