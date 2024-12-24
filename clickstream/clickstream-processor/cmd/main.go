@@ -38,9 +38,11 @@ CREATE TABLE IF NOT EXISTS click_counts_table AS
 
 // Função para criar o stream e a tabela no KSQLDB
 func initializeKSQLObjects() {
+
+	log.Println("Creating TABLE and STREAM if not exists")
 	queries := []string{streamSQL, tableSQL}
 	for _, query := range queries {
-		log.Println(fmt.Sprintf("Running on KSQL: %s", query))
+		//log.Println(fmt.Sprintf("Running on KSQL: %s", query))
 		if err := executeKSQLQuery(query); err != nil {
 			log.Fatalf("Failed to initialize KSQL objects: %v", err)
 		}
@@ -84,8 +86,7 @@ type CampaignMetrics struct {
 // Consulta periódica ao KSQLDB
 func queryKSQLDB() ([]CampaignMetrics, error) {
 	query := `{
-		"ksql": "SELECT campaignId, click_count, window_start, window_end FROM click_counts_table EMIT CHANGES LIMIT 10;",
-		"streamsProperties": {}
+		"ksql": "SELECT campaignId, click_count, window_start, window_end FROM click_counts_table EMIT CHANGES LIMIT 10;"
 	}`
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/query", ksqlDBURL), bytes.NewBuffer([]byte(query)))
@@ -107,22 +108,25 @@ func queryKSQLDB() ([]CampaignMetrics, error) {
 		return nil, fmt.Errorf("ksql query failed: %s", string(body))
 	}
 
-	var metrics []CampaignMetrics
-	decoder := json.NewDecoder(resp.Body)
-	for decoder.More() {
-		var record map[string]interface{}
-		if err := decoder.Decode(&record); err != nil {
-			log.Printf("failed to decode KSQL response: %v", err)
-			continue
-		}
+	// Decodifica a resposta como um array de objetos JSON
+	var ksqlResponse []map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&ksqlResponse); err != nil {
+		return nil, fmt.Errorf("failed to decode KSQL response: %v", err)
+	}
 
-		row := record["row"].(map[string]interface{})["columns"].([]interface{})
-		metrics = append(metrics, CampaignMetrics{
-			CampaignID:  row[0].(string),
-			ClickCount:  int(row[1].(float64)),
-			WindowStart: row[2].(string),
-			WindowEnd:   row[3].(string),
-		})
+	var metrics []CampaignMetrics
+
+	for _, record := range ksqlResponse {
+		// Processa apenas objetos do tipo "row"
+		if row, ok := record["row"].(map[string]interface{}); ok {
+			columns := row["columns"].([]interface{})
+			metrics = append(metrics, CampaignMetrics{
+				CampaignID:  columns[0].(string),
+				ClickCount:  int(columns[1].(float64)),
+				WindowStart: time.UnixMilli(int64(columns[2].(float64))).Format(time.RFC3339),
+				WindowEnd:   time.UnixMilli(int64(columns[3].(float64))).Format(time.RFC3339),
+			})
+		}
 	}
 
 	return metrics, nil
@@ -149,8 +153,9 @@ func main() {
 	// Inicializa o stream e a tabela no KSQLDB
 	initializeKSQLObjects()
 
-	log.Println("Waiting for metrics")
 	for {
+		log.Println("Waiting for metrics")
+
 		// Consulta o KSQLDB com resiliência
 		metrics := queryKSQLDBWithRetries()
 
@@ -167,6 +172,6 @@ func main() {
 		}
 
 		// Aguardar até a próxima janela de tempo (2 minutos neste caso)
-		time.Sleep(2 * time.Minute)
+		time.Sleep(1 * time.Minute)
 	}
 }
