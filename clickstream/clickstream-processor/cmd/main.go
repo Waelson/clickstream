@@ -25,6 +25,8 @@ CREATE STREAM IF NOT EXISTS click_events_stream (
   timestamp STRING
 ) WITH (
   KAFKA_TOPIC='click_events',
+  PARTITIONS=3,
+  REPLICAS=1,
   VALUE_FORMAT='JSON'
 );`
 
@@ -45,12 +47,20 @@ func initializeKSQLObjects() {
 
 	log.Println("Creating TABLE and STREAM if not exists")
 	queries := []string{streamSQL, tableSQL}
+
 	for _, query := range queries {
-		//log.Println(fmt.Sprintf("Running on KSQL: %s", query))
-		if err := executeKSQLQuery(query); err != nil {
-			log.Fatalf("Failed to initialize KSQL objects: %v", err)
+		time.Sleep(45 * time.Millisecond)
+		for {
+			err := executeKSQLQuery(query)
+			if err != nil {
+				//log.Printf("Failed to execute KSQL query: %s. Retrying in 10ms. Error: %v", query, err)
+				time.Sleep(45 * time.Millisecond)
+				continue
+			}
+
+			log.Printf("Successfully executed KSQL query: %s", query)
+			break
 		}
-		log.Printf("Successfully executed KSQL query: %s", query)
 	}
 }
 

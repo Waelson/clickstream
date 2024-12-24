@@ -5,11 +5,12 @@ services:
     build:
       context: ./clickstream/clickstream-processor
       dockerfile: Dockerfile
+    ports:
+      - '8081:8081'
     depends_on:
-      - grafana
-      - prometheus
+      - ksql
     environment:
-      - URL_KSQL=http://ksql:8088
+      URL_KSQL: "http://ksql:8088"
 
   ksql:
     image:  confluentinc/ksqldb-server:latest
