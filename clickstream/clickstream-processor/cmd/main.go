@@ -47,13 +47,12 @@ func initializeKSQLObjects() {
 
 	log.Println("Creating TABLE and STREAM if not exists")
 	queries := []string{streamSQL, tableSQL}
+	time.Sleep(60 * time.Millisecond)
 
 	for _, query := range queries {
-		time.Sleep(45 * time.Millisecond)
 		for {
 			err := executeKSQLQuery(query)
 			if err != nil {
-				//log.Printf("Failed to execute KSQL query: %s. Retrying in 10ms. Error: %v", query, err)
 				time.Sleep(45 * time.Millisecond)
 				continue
 			}
@@ -159,6 +158,7 @@ func queryKSQLDB() ([]CampaignMetrics, error) {
 
 func queryKSQLDBWithRetries() []CampaignMetrics {
 	for {
+		log.Println("Waiting for metrics")
 		metrics, err := queryKSQLDB()
 		if err != nil {
 			log.Printf("Failed to query KSQLDB: %v", err)
@@ -183,7 +183,7 @@ func collectMetrics() {
 	for {
 		log.Println("Waiting for metrics")
 
-		metricsRecord.ResetGaugeFeatureFlag()
+		metricsRecord.ResetGaugeCampaign()
 
 		// Consulta o KSQLDB com resiliência
 		metrics := queryKSQLDBWithRetries()

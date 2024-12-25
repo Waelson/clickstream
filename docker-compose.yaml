@@ -1,6 +1,38 @@
 version: '2'
 services:
 
+  items-web:
+    build:
+      context: ./items/items-web
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - items-bff
+
+  items-bff:
+    build:
+      context: ./items/items-bff
+      dockerfile: Dockerfile
+    ports:
+      - '8083:8083'
+    depends_on:
+      - clickstream-api
+    environment:
+      URL_CS_API: "http://clickstream-api:8082"
+
+
+  clickstream-api:
+    build:
+      context: ./clickstream/clickstream-api
+      dockerfile: Dockerfile
+    ports:
+      - '8082:8082'
+    depends_on:
+      - ksql
+    environment:
+      URL_KAFKA: "kafka:9092"
+
   clickstream-processor:
     build:
       context: ./clickstream/clickstream-processor

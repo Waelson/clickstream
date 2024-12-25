@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 type Item struct {
@@ -41,7 +42,7 @@ func enableCORS(next http.Handler) http.Handler {
 	})
 }
 
-const clickstreamAPI = "http://localhost:4000/api/click"
+const clickstreamAPI = "http://localhost:8082"
 
 func main() {
 	// Criação de um roteador
@@ -77,7 +78,7 @@ func main() {
 	handler := enableCORS(mux)
 
 	// Inicia o servidor
-	port := ":3000"
+	port := ":8083"
 	log.Printf("items-bff running on http://localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, handler))
 }
@@ -90,8 +91,13 @@ func forwardToClickstreamAPI(click map[string]string) error {
 		return err
 	}
 
+	csApi := os.Getenv("URL_CS_API")
+	if csApi == "" {
+		csApi = clickstreamAPI
+	}
+
 	// Faz a requisição POST ao clickstream-api
-	resp, err := http.Post(clickstreamAPI, "application/json", bytes.NewBuffer(data))
+	resp, err := http.Post(fmt.Sprintf("%s/api/click", csApi), "application/json", bytes.NewBuffer(data))
 	if err != nil {
 		return err
 	}

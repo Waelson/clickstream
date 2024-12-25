@@ -6,6 +6,7 @@ import (
 	"github.com/segmentio/kafka-go"
 	"log"
 	"net/http"
+	"os"
 )
 
 const (
@@ -44,8 +45,14 @@ func handleClickEvent(w http.ResponseWriter, r *http.Request) {
 // Funcao para publicar o evento no Kafka
 func publishToKafka(event ClickEvent) error {
 	// Cria um writer para o Kafka
+
+	kafkaServer := os.Getenv("URL_KAFKA")
+	if kafkaServer == "" {
+		kafkaServer = brokerAddress
+	}
+
 	writer := kafka.Writer{
-		Addr:     kafka.TCP(brokerAddress),
+		Addr:     kafka.TCP(kafkaServer),
 		Topic:    topic,
 		Balancer: &kafka.Hash{},
 	}
@@ -67,7 +74,7 @@ func publishToKafka(event ClickEvent) error {
 func main() {
 	http.HandleFunc("/api/click", handleClickEvent)
 
-	port := ":4000"
+	port := ":8082"
 	log.Printf("clickstream-api running on http://localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

@@ -5,34 +5,34 @@ import (
 )
 
 type MetricsRecord interface {
-	ResetGaugeFeatureFlag()
+	ResetGaugeCampaign()
 	WithLabelValues(campaignName string, id string, value float64)
 }
 
 type metricsRecord struct {
-	gaugeFeatureFlag *prometheus.GaugeVec
+	gaugeCampaign *prometheus.GaugeVec
 }
 
 func (m *metricsRecord) WithLabelValues(campaignName string, id string, value float64) {
-	m.gaugeFeatureFlag.WithLabelValues(campaignName, id).Set(value)
+	m.gaugeCampaign.WithLabelValues(campaignName).Set(value)
 }
 
-func (m *metricsRecord) ResetGaugeFeatureFlag() {
-	m.gaugeFeatureFlag.Reset()
+func (m *metricsRecord) ResetGaugeCampaign() {
+	m.gaugeCampaign.Reset()
 }
 
 func NewMetricsRecord() MetricsRecord {
 	campaignGauge := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "campaign_click_count",
+			Name: "campaign",
 			Help: "Number of link clicks per campaign",
 		},
-		[]string{"campaign_id", "click_count"},
+		[]string{"campaign_name"},
 	)
 
 	prometheus.MustRegister(campaignGauge)
 
 	return &metricsRecord{
-		gaugeFeatureFlag: campaignGauge,
+		gaugeCampaign: campaignGauge,
 	}
 }
