@@ -1,7 +1,7 @@
 global:
-  scrape_interval: 5s
+  scrape_interval: 30s
 
 scrape_configs:
-  - job_name: 'webapp'
+  - job_name: 'clickstream'
     static_configs:
       - targets: ['clickstream-processor:8081']

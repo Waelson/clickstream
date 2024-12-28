@@ -19,10 +19,8 @@ type Item struct {
 var items = []Item{
 	{ID: "1", Name: "Item A", CampaignID: "promocao-natal", ImageURL: "https://via.placeholder.com/200?text=Item+A"},
 	{ID: "2", Name: "Item B", CampaignID: "promocao-natal", ImageURL: "https://via.placeholder.com/200?text=Item+B"},
-	{ID: "3", Name: "Item C", CampaignID: "promocao-natal", ImageURL: "https://via.placeholder.com/200?text=Item+C"},
+	{ID: "3", Name: "Item C", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+C"},
 	{ID: "4", Name: "Item D", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+D"},
-	{ID: "5", Name: "Item E", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+E"},
-	{ID: "6", Name: "Item F", CampaignID: "saldao-black-friday", ImageURL: "https://via.placeholder.com/200?text=Item+F"},
 }
 
 // Middleware para habilitar CORS
@@ -78,7 +76,7 @@ func main() {
 	handler := enableCORS(mux)
 
 	// Inicia o servidor
-	port := ":8083"
+	port := ":8079"
 	log.Printf("items-bff running on http://localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, handler))
 }
