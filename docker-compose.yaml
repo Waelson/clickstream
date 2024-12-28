@@ -1,21 +1,75 @@
 version: '2'
 services:
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.0
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "kafka:9092"
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+      SCHEMA_REGISTRY_HOST_NAME: "schema-registry"
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: "1"
+    depends_on:
+      - kafka
 
-  items-web:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_USER: user_metrics
+      POSTGRES_PASSWORD: password_metrics
+      POSTGRES_DB: db_metrics
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect:7.5.0
+    ports:
+      - "8083:8083"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: "kafka:9092"
+      CONNECT_REST_PORT: 8083
+      CONNECT_LISTENERS: "http://0.0.0.0:8083"
+      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+      CONNECT_GROUP_ID: "kafka-connect-group"
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_KEY_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONNECT_CONFIG_STORAGE_TOPIC: "connect-config"
+      CONNECT_OFFSET_STORAGE_TOPIC: "connect-offset"
+      CONNECT_STATUS_STORAGE_TOPIC: "connect-status"
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_PLUGIN_PATH: "/usr/share/java"
+    volumes:
+      - ./libs/postgresql-42.7.4.jar:/usr/share/java/kafka/postgresql-42.7.4.jar
+      - ./libs/kafka-connect-jdbc-10.8.0.jar:/usr/share/java/kafka-connect-jdbc-10.8.0.jar
+    depends_on:
+      - kafka
+      - postgres
+      - schema-registry
+
+  items-frontend:
     build:
-      context: ./items/items-web
+      context: items/items-frontend
       dockerfile: Dockerfile
     ports:
       - '8080:8080'
     depends_on:
-      - items-bff
+      - items-api
 
-  items-bff:
+  items-api:
     build:
-      context: ./items/items-bff
+      context: items/items-api
       dockerfile: Dockerfile
     ports:
-      - '8083:8083'
+      - '8079:8079'
     depends_on:
       - clickstream-api
     environment:
@@ -33,16 +87,16 @@ services:
     environment:
       URL_KAFKA: "kafka:9092"
 
-  clickstream-processor:
-    build:
-      context: ./clickstream/clickstream-processor
-      dockerfile: Dockerfile
-    ports:
-      - '8081:8081'
-    depends_on:
-      - ksql
-    environment:
-      URL_KSQL: "http://ksql:8088"
+#  clickstream-processor:
+#    build:
+#      context: ./clickstream/clickstream-processor
+#      dockerfile: Dockerfile
+#    ports:
+#      - '8081:8081'
+#    depends_on:
+#      - ksql
+#    environment:
+#      URL_KSQL: "http://ksql:8088"
 
   ksql:
     image:  confluentinc/ksqldb-server:latest
@@ -52,9 +106,10 @@ services:
       KSQL_LISTENERS: http://0.0.0.0:8088/
       KSQL_KSQL_SERVICE_ID: ksql_service_2
       KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081/"
     depends_on:
       - kafka
-      - zookeeper
+      - schema-registry
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -86,37 +141,41 @@ services:
     extra_hosts:
       - "moby:127.0.0.1"
 
-  kafkadrop:
-    image: obsidiandynamics/kafdrop
-    restart: "no"
-    ports:
-      - '9000:9000'
-    depends_on:
-      - kafka
-      - zookeeper
-    environment:
-      KAFKA_BROKERCONNECT: kafka:9092
-      JVM_OPTS: -Xms32M -Xmx64M
-    extra_hosts:
-      - "moby:127.0.0.1"
+#  kafkadrop:
+#    image: obsidiandynamics/kafdrop
+#    restart: "no"
+#    ports:
+#      - '9000:9000'
+#    depends_on:
+#      - kafka
+#      - zookeeper
+#    environment:
+#      KAFKA_BROKERCONNECT: kafka:9092
+#      JVM_OPTS: -Xms32M -Xmx64M
+#    extra_hosts:
+#      - "moby:127.0.0.1"
 
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
-    depends_on:
-      - kafka
-      - ksql
-      - zookeeper
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yaml
+#  prometheus:
+#    image: prom/prometheus
+#    ports:
+#      - "9090:9090"
+#    depends_on:
+#      - kafka
+#      - ksql
+#      - zookeeper
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
     image: grafana/grafana
     depends_on:
-      - prometheus
+#      - prometheus
       - kafka
       - ksql
       - zookeeper
     ports:
       - "3000:3000"
+
+volumes:
+  postgres_data:
+    driver: local

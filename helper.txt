@@ -1,0 +1,90 @@
+* Criar conector
+
+POST http://localhost:8083/connectors
+{
+  "name": "postgres-sink-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:postgresql://postgres:5432/db_metrics",
+    "connection.user": "user_metrics",
+    "connection.password": "password_metrics",
+    "topics": "CLICK_COUNTS_TABLE_OUTPUT",
+    "insert.mode": "insert",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+
+    "transforms": "ConvertStartTime,ConvertEndTime",
+
+    "transforms.ConvertStartTime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.ConvertStartTime.field": "START_TIME",
+    "transforms.ConvertStartTime.target.type": "Timestamp",
+
+    "transforms.ConvertEndTime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.ConvertEndTime.field": "END_TIME",
+    "transforms.ConvertEndTime.target.type": "Timestamp"
+  }
+}
+
+* Atualizar conector
+
+PUT http://localhost:8083/connectors/postgres-sink-connector/config
+{
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:postgresql://postgres:5432/db_metrics",
+    "connection.user": "user_metrics",
+    "connection.password": "password_metrics",
+    "topics": "CLICK_COUNTS_TABLE_AVRO_OUTPUT",
+    "insert.mode": "insert",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+  }
+
+  * Obter status do conector
+  GET http://localhost:8083/connectors/postgres-sink-connector/status
+
+  * Reiniciar conector
+  POST http://localhost:8083/connectors/postgres-sink-connector/restart
+
+  * Excluir conector
+  DELETE http://localhost:8083/connectors/postgres-sink-connector
+
+* Criar topico
+docker exec clickstream-kafka-1 kafka-topics --create --topic click_events --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1
+
+* Cria o Stream
+docker exec clickstream-ksql-1 ksql -e "CREATE STREAM IF NOT EXISTS click_events_stream (itemId STRING, campaignId STRING, timestamp STRING) WITH (KAFKA_TOPIC='click_events',VALUE_FORMAT='JSON');"
+
+* Cria a tabela de agregacao
+docker exec clickstream-ksql-1 ksql -e "CREATE TABLE IF NOT EXISTS CLICK_COUNTS_TABLE WITH (KAFKA_TOPIC='CLICK_COUNTS_TABLE_OUTPUT', VALUE_FORMAT='AVRO', PARTITIONS=3, REPLICAS=1) AS SELECT CLICK_EVENTS_STREAM.CAMPAIGNID AS CAMPAIGNID, AS_VALUE(CLICK_EVENTS_STREAM.CAMPAIGNID) AS ID, COUNT(*) AS CLICK_COUNT, WINDOWSTART AS START_TIME, WINDOWEND AS END_TIME FROM CLICK_EVENTS_STREAM CLICK_EVENTS_STREAM WINDOW TUMBLING (SIZE 2 MINUTES) GROUP BY CLICK_EVENTS_STREAM.CAMPAIGNID EMIT CHANGES;"
+
+* Consome os dados de um topico:
+docker exec clickstream-kafka-1 kafka-console-consumer --bootstrap-server kafka:9092 --topic CLICK_COUNTS_TABLE_OUTPUT --from-beginning
+docker exec clickstream-kafka-1 kafka-console-consumer --bootstrap-server kafka:9092 --topic click_events --from-beginning
+
+
+psql -h localhost -p 5432  -U user_metrics -d db_metrics
+-- Listar bancos de dados
+\l
+
+-- Conectar a um banco de dados
+\c mydatabase
+
+-- Listar tabelas
+\dt
+
+-- Visualizar estrutura de uma tabela
+\d my_table
+
+-- Executar consulta
+SELECT * FROM my_table;
+
+-- Sair do psql
+\q

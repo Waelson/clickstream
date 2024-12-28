@@ -12,6 +12,6 @@ func main() {
 
 	// Iniciar o servidor
 	port := ":8080"
-	log.Printf("items-web running on http://localhost%s", port)
+	log.Printf("items-frontend running on http://localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

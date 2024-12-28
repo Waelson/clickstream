@@ -77,7 +77,7 @@ func main() {
 
 	// Inicia o servidor
 	port := ":8079"
-	log.Printf("items-bff running on http://localhost%s", port)
+	log.Printf("items-api running on http://localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, handler))
 }
 

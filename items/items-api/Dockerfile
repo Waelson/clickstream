@@ -12,7 +12,7 @@ RUN go mod download
 COPY . .
 
 # Compila a aplicação com otimizações para produção
-RUN CGO_ENABLED=0 GOOS=linux go build -o items-bff ./cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o items-api ./cmd/main.go
 
 # Etapa 2: Imagem final
 FROM alpine:latest
@@ -21,7 +21,7 @@ FROM alpine:latest
 WORKDIR /root/
 
 # Copia o binário gerado na etapa anterior
-COPY --from=builder /app/items-bff .
+COPY --from=builder /app/items-api .
 
 # Define o comando padrão para iniciar a aplicação
-CMD ["./items-bff"]
+CMD ["./items-api"]
