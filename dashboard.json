@@ -38,7 +38,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "be8b2ie86n56of"
+        "uid": "<datasource_uid_grafana>"
       },
       "description": "",
       "fieldConfig": {
@@ -88,7 +88,7 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "be8b2ie86n56of"
+            "uid": "<datasource_uid_grafana>"
           },
           "editorMode": "builder",
           "format": "table",
@@ -168,7 +168,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "be8b2ie86n56of"
+        "uid": "<datasource_uid_grafana>"
       },
       "fieldConfig": {
         "defaults": {
@@ -217,7 +217,7 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "be8b2ie86n56of"
+            "uid": "<datasource_uid_grafana>"
           },
           "editorMode": "builder",
           "format": "table",
@@ -297,7 +297,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "be8b2ie86n56of"
+        "uid": "<datasource_uid_grafana>"
       },
       "fieldConfig": {
         "defaults": {
@@ -374,7 +374,7 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "be8b2ie86n56of"
+            "uid": "<datasource_uid_grafana>"
           },
           "editorMode": "builder",
           "format": "table",
@@ -453,7 +453,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "be8b2ie86n56of"
+        "uid": "<datasource_uid_grafana>"
       },
       "fieldConfig": {
         "defaults": {
@@ -530,7 +530,7 @@
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "be8b2ie86n56of"
+            "uid": "<datasource_uid_grafana>"
           },
           "editorMode": "builder",
           "format": "table",
