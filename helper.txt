@@ -88,3 +88,7 @@ SELECT * FROM my_table;
 
 -- Sair do psql
 \q
+------
+URL
+Connect UI: http://localhost:8084/
+Items Store: http://localhost:8080/

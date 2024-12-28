@@ -1,5 +1,29 @@
 version: '2'
 services:
+  schema-registry-ui:
+    image: landoop/schema-registry-ui:0.9.5
+    ports:
+      - "8086:8086"
+    environment:
+      PORT: "8086"
+      PROXY: "true"
+      SCHEMAREGISTRY_URL: "http://schema-registry:8081/"
+    depends_on:
+      - schema-registry
+
+
+  connect-ui:
+    image: landoop/kafka-connect-ui:0.9.7
+    ports:
+      - "8084:8084"
+    environment:
+      PORT: "8084"
+      PROXY: "true"
+      CONNECT_URL: "http://kafka-connect:8083"
+    depends_on:
+      - "kafka-connect"
+
+
   schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
     ports:
