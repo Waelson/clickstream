@@ -2,9 +2,9 @@
 
 ## Introdução
 
-Esta é uma solução de **Clickstream** projetada para plataformas de **e-commerce**, permitindo que as empresas acompanhem, analisem e otimizem a interação dos usuários em tempo real.
+Essa solução de Clickstream foi projetada para um sistema de e-commerce fictício, ela permite acompanhar, entender e melhorar como os usuários interagem com seus produtos em tempo real.
 
-Os dados de Clickstream consistem em capturar os cliques e interações do usuário com os produtos exibidos no site, oferecendo informações valiosas sobre o comportamento do consumidor. Com a capacidade de processar esses dados em tempo real, essa solução fornece insights imediatos para ações estratégicas em campanhas de publicidade e personalização de experiência.
+Basicamente, ela captura os cliques e as interações dos usuários no site, transformando isso em dados valiosos sobre o comportamento deles. Com tudo processado em tempo real, você consegue ter insights instantâneos para ajustar campanhas de marketing, personalizar a experiência do cliente e tomar decisões estratégicas na hora certa.
 
 <br>
 
