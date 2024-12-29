@@ -10,17 +10,39 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 ## Arquitetura
 ![Architecture](documentation/architecture.png)
 
+### Descrição da Arquitetura
 
-## Tecnologias Utilizadas
+#### Items Application
+- **items-frontend**: Interface usada por usuários de e-commerce para interagir com os itens disponíveis.
+- **items-api**: Backend responsável por buscar itens e registrar cliques, chamando a **clickstream-api**.
 
-Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas robustas para processar e armazenar dados em tempo real:
+---
 
-- **Kafka**: Para ingestão e transporte de eventos de cliques.
-- **KSQLDB**: Para agregação e processamento em tempo real dos dados capturados.
-- **Kafka Connect**: Para integração e persistência dos dados processados em um banco de dados relacional.
-- **PostgreSQL**: Para armazenamento e consulta de métricas agregadas.
-- **Docker**: Para containerização de todos os serviços, facilitando o deployment e a escalabilidade.
-- **Schema Registry**: Para gerenciamento de esquemas e validação de dados, garantindo a integridade das mensagens.
+#### Clickstream Ecosystem
+- **clickstream-api**: Envia os eventos de cliques para o **Kafka**.
+- **Kafka**:
+    - Armazena eventos de cliques no tópico `click_events`.
+    - Serve como intermediário para sistemas downstream.
+- **KSQLDB**:
+    - Consome eventos do Kafka.
+    - Agrega dados e publica em um tópico de saída (`click_counts_table_output`).
+- **Schema Registry**:
+    - Gerencia os esquemas das mensagens trafegadas no Kafka.
+    - Garante consistência e validação.
+- **Kafka Connect**: Consome dados agregados do Kafka e insere no banco de dados PostgreSQL.
+
+---
+
+#### Metrics Dashboard
+- **Postgres**: Armazena dados agregados para persistência.
+- **Grafana**: Lê os dados do PostgreSQL e permite a visualização de métricas em dashboards acessados por usuários de marketing.
+
+___
+
+#### Monitoring & Management
+- **Connect UI**: Interface para gerenciar o Kafka Connect.
+- **Registry UI**: Interface para gerenciar esquemas no Schema Registry.
+
 
 ## Inicializando e Configurando a Solução
 
