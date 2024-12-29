@@ -28,6 +28,7 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 
 <br>
 <br>
+
 ## Inicializando e Configurando a Solução
 
 Siga os passos abaixo para inicializar e configurar a solução de Clickstream:
