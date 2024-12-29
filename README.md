@@ -12,13 +12,6 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 
 ---
 
-## Benefícios para Campanhas de Publicidade
-
-Empresas de e-commerce podem transformar os dados de Clickstream em vantagens competitivas ao aplicá-los em campanhas de publicidade. Alguns exemplos incluem:
-
-1. **Análise de Desempenho em Tempo Real**:
-    - Monitore em tempo real o impacto das campanhas em diferentes canais e identifique quais campanhas estão gerando mais engajamento.
----
 ## Tecnologias Utilizadas
 
 Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas robustas para processar e armazenar dados em tempo real:
@@ -36,15 +29,15 @@ Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas rob
 
 A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o processamento e análise em tempo real dos eventos de clique:
 
-# Fluxo de Dados: Solução de Clickstream
+### Fluxo de Dados: Solução de Clickstream
 
-## 1. Captura do Evento de Clique
+### 1. Captura do Evento de Clique
 - **Origem**: Um evento de clique, representado por uma mensagem JSON, é gerado por uma aplicação de e-commerce.
 - **Destino**: O evento é enviado para o tópico Kafka chamado `click_events`.
 
 ---
 
-## 2. Kafka
+### 2. Kafka
 - **Papel**: Atua como uma camada intermediária de armazenamento de eventos de clique. O tópico `click_events` recebe todos os eventos gerados pela aplicação de e-commerce.
 - **Características**:
    - Os eventos são armazenados de forma distribuída.
@@ -52,7 +45,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 
 ---
 
-## 3. KSQLDB
+### 3. KSQLDB
 ### **Stream (`click_events_stream`)**
 - **Descrição**: O `click_events_stream` consome mensagens do tópico `click_events`.
 - **Papel**:
@@ -69,7 +62,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 
 ---
 
-## 4. Kafka (Tópico `click_counts_table_output`)
+### 4. Kafka (Tópico `click_counts_table_output`)
 - **Papel**: Recebe os dados agregados e sumarizados da tabela `click_counts_table`.
 - **Formato dos Dados**:
    - **campaignId**: Identificação da campanha.
@@ -78,7 +71,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 
 ---
 
-## 5. Kafka Connect
+### 5. Kafka Connect
 ### **Sink (`postgres-sink-connector`)**
 - **Papel**:
    - Lê os dados do tópico `click_counts_table_output`.
@@ -88,7 +81,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 
 ---
 
-## 6. PostgreSQL
+### 6. PostgreSQL
 - **Papel**: Armazena os dados agregados de cliques de forma estruturada e persistente.
 - **Benefícios**:
    - Facilita a consulta e análise dos dados agregados.
@@ -96,7 +89,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 
 ---
 
-## Resumo do Fluxo
+### Resumo do Fluxo
 1. Eventos de cliques são capturados e enviados para o Kafka.
 2. O KSQLDB processa os eventos em tempo real:
    - Converte o fluxo contínuo (`click_events_stream`) em agregações sumarizadas (`click_counts_table`).
