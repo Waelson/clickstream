@@ -10,34 +10,21 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 ## Arquitetura
 ![Architecture](documentation/architecture.png)
 
-### Descrição da Arquitetura
+### Componentes da Arquitetura
 
-#### Items Application
-- **items-frontend**: Interface usada por usuários de e-commerce para interagir com os itens disponíveis.
-- **items-api**: Backend responsável por buscar itens e registrar cliques, chamando a **clickstream-api**.
-
-#### Clickstream Ecosystem
-- **clickstream-api**: Envia os eventos de cliques para o **Kafka**.
-- **Kafka**:
-    - Armazena eventos de cliques no tópico `click_events`.
-    - Serve como intermediário para sistemas downstream.
-- **KSQLDB**:
-    - Consome eventos do Kafka.
-    - Agrega dados e publica em um tópico de saída (`click_counts_table_output`).
-- **Schema Registry**:
-    - Gerencia os esquemas das mensagens trafegadas no Kafka.
-    - Garante consistência e validação.
-- **Kafka Connect**: Consome dados agregados do Kafka e insere no banco de dados PostgreSQL.
-
-#### Metrics Dashboard
-- **Postgres**: Armazena dados agregados para persistência.
-- **Grafana**: Lê os dados do PostgreSQL e permite a visualização de métricas em dashboards acessados por usuários de marketing.
-
-#### Monitoring & Management
-- **Connect UI**: Interface para gerenciar o Kafka Connect.
-- **Registry UI**: Interface para gerenciar esquemas no Schema Registry.
-
-
+| **Componente**          | **Descrição**                                                                                                      |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------|
+| items-frontend           | Interface usada por usuários de e-commerce para interagir com os itens disponíveis.                                |
+| items-api                | Backend responsável por buscar itens e registrar cliques, chamando a **clickstream-api**.                          |
+| clickstream-api          | Envia os eventos de cliques para o **Kafka**.                                                                      |
+| Kafka                    | - Armazena eventos de cliques no tópico `click_events`. Serve como intermediário para sistemas downstream.         |
+| KSQLDB                   | - Consome eventos do Kafka. Agrega dados e publica em um tópico de saída (`click_counts_table_output`).            |
+| Schema Registry          | - Gerencia os esquemas das mensagens trafegadas no Kafka. Garante consistência e validação.                        |
+| Kafka Connect            | Consome dados agregados do Kafka e insere no banco de dados PostgreSQL.                                            |
+| Postgres                 | Armazena dados agregados para persistência.                                                                        |
+| Grafana                  | Lê os dados do PostgreSQL e permite a visualização de métricas em dashboards acessados por usuários de marketing.  |
+| Connect UI               | Interface para monitorar o Kafka Connect.                                                                          |
+| Registry UI              | Interface para gerenciar esquemas no Schema Registry.                                                              |
 
 
 ## Inicializando e Configurando a Solução
