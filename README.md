@@ -41,21 +41,37 @@ $ ./setup.sh
 Este script irá configurar os tópicos Kafka, streams e tabelas necessários para o funcionamento da solução.
 
 ### Passo 3: Criando o Data Source no Grafana
-1. Acesse o Grafana através do link: [http://localhost:3000/](http://localhost:3000/)
+
+Siga os passos abaixo para criar o Data Source no Grafana:
+
+1. **Acesse o Grafana**
+  - Link: [http://localhost:3000/](http://localhost:3000/)
   - **Usuário**: `admin`
   - **Senha**: `admin`
-2. No menu lateral, vá até **`Connections > Data Sources`**.
-3. Clique em **`Add new data source`** e selecione a opção **`PostgreSQL`**.
-4. Preencha os campos com os seguintes dados de configuração: 
-- **Host URL**: postgres:5432
-- **Database Name**: db_metrics
-- **Username**: user_metrics
-- **Password**: password_metrics
-- **TLS/SSL Mode**: Disable
-5. Após clicar no botão `Save & Test`, o Data Source será criado.
-6. Em seguida, observe a URL no navegador, que será algo semelhante a:  
-`http://localhost:3000/connections/datasources/edit/ee8bhesmqpczkb`. 
-O último conjunto de caracteres na URL (`ee8bhesmqpczkb`) representa o UID do Data Source. Copie esse valor, pois ele será necessário no próximo passo.
+
+2. **Navegue até o menu Data Sources**  
+   No menu lateral, vá até **`Connections > Data Sources`**.
+
+3. **Adicionar um novo Data Source**  
+   Clique no botão **`Add new data source`** e selecione a opção **`PostgreSQL`**.
+
+4. **Configurar o Data Source**  
+   Preencha os campos com as seguintes informações:
+  - **Host URL**: `postgres:5432`
+  - **Database Name**: `db_metrics`
+  - **Username**: `user_metrics`
+  - **Password**: `password_metrics`
+  - **TLS/SSL Mode**: `Disable`
+
+5. **Salvar e testar a conexão**  
+   Após preencher os campos, clique no botão **`Save & Test`**. Se tudo estiver correto, o Data Source será criado com sucesso.
+
+6. **Obter o UID do Data Source**  
+   Após a criação, observe a URL no navegador. Ela será algo como:  
+   `http://localhost:3000/connections/datasources/edit/ee8bhesmqpczkb`
+  - O último conjunto de caracteres (`ee8bhesmqpczkb`) é o **UID do Data Source**.
+  - Copie este valor, pois ele será necessário no próximo passo.
+
 
 ### Passo 4: Configurando e Importando o Dashboard
 Siga os passos abaixo para configurar e importar o dashboard no Grafana:
