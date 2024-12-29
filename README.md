@@ -6,7 +6,6 @@ Essa solução de Clickstream foi projetada para um sistema de e-commerce fictí
 
 Basicamente, ela captura os cliques e as interações dos usuários no site, transformando isso em dados valiosos sobre o comportamento deles. Com tudo processado em tempo real, você consegue ter insights instantâneos para ajustar campanhas de marketing, personalizar a experiência do cliente e tomar decisões estratégicas na hora certa.
 
-<br>
 
 ## Arquitetura
 ![Architecture](documentation/architecture.png)
