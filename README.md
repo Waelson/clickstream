@@ -112,7 +112,7 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 ## Entendendo o Fluxo de Dados
 ![Data Flow](documentation/data_flow.png)
 
-O fluxo dos dados funciona de forma simples e eficiente. Toda vez que alguém clica em um item no site, um evento em formato JSON é gerado e enviado para o Kafka, que armazena esses eventos de forma organizada, pronta para ser consumida por outros sistemas.
+O fluxo dos dados funciona de forma simples. Toda vez que alguém clica em um item no site, um evento em formato JSON é gerado e enviado para o Kafka, que armazena esses eventos de forma organizada, pronta para ser consumida por outros sistemas.
 
 O KSQLDB entra em ação consumindo esses eventos e processando as informações. Ele cria um fluxo contínuo (stream) que processa os cliques em tempo real e, em seguida, organiza esses cliques em uma tabela que conta o número de cliques por campanha a cada 2 minutos. Esses dados agregados são então enviados para um novo tópico no Kafka.
 
