@@ -136,6 +136,8 @@ Posteriormente, o Kafka Connect lê os dados do tópico de agregação e insere 
 
 Por fim, o PostgreSQL armazena os dados de forma estruturada e organizada. Esses dados podem ser acessados por ferramentas como Grafana ou Looker, que possibilitam a criação de dashboards atrativos e úteis para análises em tempo real.
 
+<br>
+
 ## Dados no Postgres
 > **Nota:** A tabela é criada automaticamente pelo Kafka Connect. Portanto, para que você possa acessá-la é necessários que todas as configurações tenham sido realizadas com sucesso. 
 
