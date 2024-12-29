@@ -26,7 +26,7 @@ Basicamente, ela captura os cliques e as interações dos usuários no site, tra
 | Connect UI               | Interface para monitorar o Kafka Connect.                                                                          |
 | Registry UI              | Interface para gerenciar esquemas no Schema Registry.                                                              |
 
-
+<br>
 
 ## Inicializando e Configurando a Solução
 
