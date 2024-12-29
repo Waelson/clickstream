@@ -30,19 +30,21 @@ Siga os passos abaixo para inicializar e configurar a solução de Clickstream:
 Acesse o diretório raiz da solução e execute o seguinte comando para construir e iniciar todos os contêineres:
 
 ```bash
-docker-compose up --build
+$ docker-compose up --build
 ```
 ### Passo 2: Executar o Script de Configuração
 Após o Docker Compose inicializar todos os contêineres, conceda permissão de execução ao script de configuração e execute-o:
 ```bash
-chmod +x setup.sh
-./setup.sh
+$ chmod +x setup.sh
+$ ./setup.sh
 ```
 Este script irá configurar os tópicos Kafka, streams e tabelas necessários para o funcionamento da solução.
 
+## Utilizando a Solução
 
 
-## Fluxo de Dados
+
+## Entendendo o Fluxo de Dados
 ![Data Flow](documentation/data_flow.png)
 
 A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o processamento e análise em tempo real dos eventos de clique:
