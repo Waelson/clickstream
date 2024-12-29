@@ -41,14 +41,14 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
    - Podem ser consumidos por diferentes sistemas downstream.
 
 
-### 3. KSQLDB
-### **Stream (`click_events_stream`)**
+### 3. KsqlDB
+#### **Stream (`click_events_stream`)**
 - **Descrição**: O `click_events_stream` consome mensagens do tópico `click_events`.
 - **Papel**:
    - Representa o fluxo contínuo e imutável dos eventos de clique.
    - Cada evento capturado pelo Kafka é processado pelo KSQLDB para extração de informações relevantes.
 
-### **Tabela (`click_counts_table`)**
+#### **Tabela (`click_counts_table`)**
 - **Descrição**: A tabela `click_counts_table` agrega os eventos capturados pelo stream em janelas de 2 minutos.
 - **Papel**:
    - Realiza a contagem de cliques por campanha (`campaignId`) dentro do intervalo de tempo especificado.
@@ -64,7 +64,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
    - **start_time** e **end_time**: Intervalo de tempo da agregação.
 
 ### 5. Kafka Connect
-### **Sink (`postgres-sink-connector`)**
+#### **Sink (`postgres-sink-connector`)**
 - **Papel**:
    - Lê os dados do tópico `click_counts_table_output`.
    - Insere as informações agregadas no banco de dados PostgreSQL.
