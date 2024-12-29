@@ -41,20 +41,24 @@ $ ./setup.sh
 Este script irá configurar os tópicos Kafka, streams e tabelas necessários para o funcionamento da solução.
 
 ### Passo 3: Criando o Data Source no Grafana
-Acesse o Grafana no link http://localhost:3000/ utilizando `admin` como usuário e senha. Crie um Data Source para PostgreSQL com os dados abaixo:
+1. Acesse o Grafana através do link: [http://localhost:3000/](http://localhost:3000/)
+  - **Usuário**: `admin`
+  - **Senha**: `admin`
+2. No menu lateral, vá até **`Connections > Data Sources`**.
+3. Clique em **`Add new data source`** e selecione a opção **`PostgreSQL`**.
+4. Preencha os campos com os seguintes dados de configuração: 
 - **Host URL**: postgres:5432
 - **Database Name**: db_metrics
 - **Username**: user_metrics
 - **Password**: password_metrics
 - **TLS/SSL Mode**: Disable
-
-Após clicar no botão `Save & Test`, o Data Source será criado, caso tudo tenha ocorrido corretamente.
-
-Em seguida, observe a URL no navegador, que será algo semelhante a:  
-`http://localhost:3000/connections/datasources/edit/ee8bhesmqpczkb`
-
+5. Após clicar no botão `Save & Test`, o Data Source será criado.
+6. Em seguida, observe a URL no navegador, que será algo semelhante a:  
+`http://localhost:3000/connections/datasources/edit/ee8bhesmqpczkb`. 
 O último conjunto de caracteres na URL (`ee8bhesmqpczkb`) representa o UID do Data Source. Copie esse valor, pois ele será necessário no próximo passo.
 
+### Passo 4: Configurando e Importando o Dashboard
+1. Edite o arquivo `dashboard.json` na raiz do projeto e substitua o texto `<datasource_uid_grafana>` pelo UID do Data Source que foi criado no passo anterior.
 ## Utilizando a Solução
 
 
