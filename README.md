@@ -27,7 +27,6 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 | Registry UI              | Interface para gerenciar esquemas no Schema Registry.                                                              |
 
 <br>
-<br>
 
 ## Inicializando e Configurando a Solução
 
@@ -100,9 +99,12 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 5. **Salvar o dashboard**
   - Por último, clique no botão **`Save`** para finalizar a importação.
 
+<br>
+
 ## Utilizando a Solução
 
 
+<br>
 
 ## Entendendo o Fluxo de Dados
 ![Data Flow](documentation/data_flow.png)
