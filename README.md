@@ -22,7 +22,6 @@ Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas rob
 - **Docker**: Para containerização de todos os serviços, facilitando o deployment e a escalabilidade.
 - **Schema Registry**: Para gerenciamento de esquemas e validação de dados, garantindo a integridade das mensagens.
 
----
 ## Fluxo de Dados
 ![Data Flow](documentation/data_flow.png)
 
@@ -34,7 +33,6 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 - **Origem**: Um evento de clique, representado por uma mensagem JSON, é gerado por uma aplicação de e-commerce.
 - **Destino**: O evento é enviado para o tópico Kafka chamado `click_events`.
 
----
 
 ### 2. Kafka
 - **Papel**: Atua como uma camada intermediária de armazenamento de eventos de clique. O tópico `click_events` recebe todos os eventos gerados pela aplicação de e-commerce.
@@ -42,7 +40,6 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
    - Os eventos são armazenados de forma distribuída.
    - Podem ser consumidos por diferentes sistemas downstream.
 
----
 
 ### 3. KSQLDB
 ### **Stream (`click_events_stream`)**
@@ -59,16 +56,12 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 - **Detalhe Técnico**:
    - Essa tabela publica os dados agregados em um novo tópico Kafka chamado `click_counts_table_output`.
 
----
-
 ### 4. Kafka (Tópico `click_counts_table_output`)
 - **Papel**: Recebe os dados agregados e sumarizados da tabela `click_counts_table`.
 - **Formato dos Dados**:
    - **campaignId**: Identificação da campanha.
    - **click_count**: Total de cliques registrados na janela de 2 minutos.
    - **start_time** e **end_time**: Intervalo de tempo da agregação.
-
----
 
 ### 5. Kafka Connect
 ### **Sink (`postgres-sink-connector`)**
@@ -78,15 +71,11 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 - **Transformação de Dados**:
    - Os campos de tempo (`start_time` e `end_time`) são convertidos de formato `BIGINT` para `timestamp` antes de serem inseridos no banco de dados.
 
----
-
 ### 6. PostgreSQL
 - **Papel**: Armazena os dados agregados de cliques de forma estruturada e persistente.
 - **Benefícios**:
    - Facilita a consulta e análise dos dados agregados.
    - Permite integração com ferramentas de visualização, como Grafana ou Looker, para criação de dashboards em tempo real.
-
----
 
 ### Resumo do Fluxo
 1. Eventos de cliques são capturados e enviados para o Kafka.
@@ -96,6 +85,6 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 4. O Kafka Connect lê os dados do tópico e insere no PostgreSQL para armazenamento persistente.
 5. Ferramentas externas podem acessar o banco de dados para análises e visualizações.
 
----
+
 
 
