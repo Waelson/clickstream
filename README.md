@@ -27,6 +27,7 @@ Basicamente, ela captura os cliques e as interações dos usuários no site, tra
 | Registry UI              | Interface para gerenciar esquemas no Schema Registry.                                                              |
 
 
+
 ## Inicializando e Configurando a Solução
 
 Siga os passos abaixo para inicializar e configurar a solução de Clickstream:
