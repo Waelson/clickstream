@@ -22,6 +22,22 @@ Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas rob
 - **Docker**: Para containerização de todos os serviços, facilitando o deployment e a escalabilidade.
 - **Schema Registry**: Para gerenciamento de esquemas e validação de dados, garantindo a integridade das mensagens.
 
+## Inicializando & Configurando
+Para colocar a solução você precisa executar dois passos. Segue abaixo os detalhes:
+
+1. Acesse o diretório raiz da solução e execute o docker-compose:
+`
+docker-compose up --build
+`
+2. Após os docker-compose inicializar todos os container, execute os comandos abaixo:
+`
+chmod +x setup.sh
+`
+
+`
+./setup.sh
+`
+
 ## Fluxo de Dados
 ![Data Flow](documentation/data_flow.png)
 
