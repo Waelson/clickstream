@@ -48,7 +48,12 @@ Acesse o Grafana no link http://localhost:3000/ utilizando `admin` como usuário
 - **Password**: password_metrics
 - **TLS/SSL Mode**: Disable
 
-Depois clique no botão `Save & Test`. Se tudo correr bem o DS será criado. Agora observe a URL do browser e verá algo similar a essa `http://localhost:3000/connections/datasources/edit/ee8bhesmqpczkb`. O último conjunto de informação (`ee8bhesmqpczkb`) é o UID do Data Source, faça uma cópia desse dado, ele será útil no próximo passo.
+Após clicar no botão `Save & Test`, o Data Source será criado, caso tudo tenha ocorrido corretamente.
+
+Em seguida, observe a URL no navegador, que será algo semelhante a:  
+`http://localhost:3000/connections/datasources/edit/ee8bhesmqpczkb`
+
+O último conjunto de caracteres na URL (`ee8bhesmqpczkb`) representa o UID do Data Source. Copie esse valor, pois ele será necessário no próximo passo.
 
 ## Utilizando a Solução
 
