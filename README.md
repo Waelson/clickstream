@@ -122,5 +122,6 @@ Por fim, o PostgreSQL armazena os dados de forma estruturada e organizada. Esses
 
 ## Dados no Postgres
 A imagem abaixo mostra como os dados são armazenados e organizados depois de persistidos no Postgres.
+
 ![Data Flow](documentation/postgres.png)
 
