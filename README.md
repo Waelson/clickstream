@@ -58,7 +58,25 @@ Este script irá configurar os tópicos Kafka, streams e tabelas necessários pa
 O último conjunto de caracteres na URL (`ee8bhesmqpczkb`) representa o UID do Data Source. Copie esse valor, pois ele será necessário no próximo passo.
 
 ### Passo 4: Configurando e Importando o Dashboard
-1. Edite o arquivo `dashboard.json` na raiz do projeto e substitua o texto `<datasource_uid_grafana>` pelo UID do Data Source que foi criado no passo anterior.
+Siga os passos abaixo para configurar e importar o dashboard no Grafana:
+
+1. **Editar o arquivo `dashboard.json`**  
+   Localize o arquivo `dashboard.json` na raiz do projeto e substitua o texto `<datasource_uid_grafana>` pelo UID do Data Source criado no passo anterior.
+
+2. **Acessar o menu Dashboards**  
+   No menu lateral do Grafana, clique em **`Dashboards`**.
+
+3. **Criar um novo dashboard**
+  - Clique no botão **`New`**.
+  - Em seguida, selecione a opção **`New dashboard`**.
+
+4. **Importar o dashboard**
+  - Clique no botão **`Import dashboard`**.
+  - Abra o arquivo `dashboard.json`, copie o conteúdo e cole no campo **`Import via dashboard JSON model`**.
+
+5. **Salvar o dashboard**
+  - Por último, clique no botão **`Save`** para finalizar a importação.
+
 ## Utilizando a Solução
 
 
