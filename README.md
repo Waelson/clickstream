@@ -27,7 +27,6 @@ Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas rob
 
 A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o processamento e análise em tempo real dos eventos de clique:
 
-### Fluxo de Dados: Solução de Clickstream
 
 ### 1. Captura do Evento de Clique
 - **Origem**: Um evento de clique, representado por uma mensagem JSON, é gerado por uma aplicação de e-commerce.
