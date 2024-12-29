@@ -10,7 +10,7 @@ Basicamente, ela captura os cliques e as interações dos usuários no site, tra
 ## Arquitetura
 ![Architecture](documentation/architecture.png)
 
-### Componentes da Arquitetura
+#### Componentes da Arquitetura
 
 | **Componente**          | **Descrição**                                                                                                      |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------|
@@ -26,7 +26,6 @@ Basicamente, ela captura os cliques e as interações dos usuários no site, tra
 | Connect UI               | Interface para monitorar o Kafka Connect.                                                                          |
 | Registry UI              | Interface para gerenciar esquemas no Schema Registry.                                                              |
 
-<br>
 
 ## Inicializando e Configurando a Solução
 
@@ -99,7 +98,6 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 5. **Salvar o dashboard**
   - Por último, clique no botão **`Save`** para finalizar a importação.
 
-<br>
 
 ## Utilizando a Solução
 > **Nota:** Para acessar os recursos da solução, é necessário que todas as configurações tenham sido realizadas com sucesso.
