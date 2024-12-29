@@ -26,7 +26,8 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 | Connect UI               | Interface para monitorar o Kafka Connect.                                                                          |
 | Registry UI              | Interface para gerenciar esquemas no Schema Registry.                                                              |
 
-
+<br>
+<br>
 ## Inicializando e Configurando a Solução
 
 Siga os passos abaixo para inicializar e configurar a solução de Clickstream:
