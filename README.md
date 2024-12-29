@@ -99,6 +99,7 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 5. **Salvar o dashboard**
   - Por último, clique no botão **`Save`** para finalizar a importação.
 
+<br>
 
 ## Utilizando a Solução
 > **Nota:** Para acessar os recursos da solução, é necessário que todas as configurações tenham sido realizadas com sucesso.
