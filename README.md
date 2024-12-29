@@ -56,7 +56,7 @@ A solução de Clickstream segue o fluxo de dados descrito abaixo, permitindo o 
 - **Detalhe Técnico**:
    - Essa tabela publica os dados agregados em um novo tópico Kafka chamado `click_counts_table_output`.
 
-### 4. Kafka (Tópico `click_counts_table_output`)
+#### 4. Kafka (Tópico `click_counts_table_output`)
 - **Papel**: Recebe os dados agregados e sumarizados da tabela `click_counts_table`.
 - **Formato dos Dados**:
    - **campaignId**: Identificação da campanha.
