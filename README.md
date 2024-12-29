@@ -6,11 +6,10 @@ Esta é uma solução de **Clickstream** projetada para plataformas de **e-comme
 
 Os dados de Clickstream consistem em capturar os cliques e interações do usuário com os produtos exibidos no site, oferecendo informações valiosas sobre o comportamento do consumidor. Com a capacidade de processar esses dados em tempo real, essa solução fornece insights imediatos para ações estratégicas em campanhas de publicidade e personalização de experiência.
 
----
+
 ## Arquitetura
 ![Architecture](documentation/architecture.png)
 
----
 
 ## Tecnologias Utilizadas
 
