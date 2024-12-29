@@ -107,13 +107,15 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 
 1. **Acessando a aplicação web**
  - Acesse a aplicação por meio desse link http://localhost:8080/
+
 ![Architecture](documentation/items_store_ui.png)
  - Para simular os eventos de cliques experimente clicar nos botões **`Click Me`** de cada item.
    
 
 2. **Visualizando os Dados**
  - Os dados em tempo real dos cliques podem ser visualizados no Dashboard no Grafana. Para isso acesse o dashboard no Grafana.
- - ![Architecture](documentation/dashboard.png)
+
+![Architecture](documentation/dashboard.png)
 
 <br>
 
