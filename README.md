@@ -115,6 +115,13 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 
 ![Architecture](documentation/dashboard.png)
 
+3. **Simulando Cliques**
+ - No diretório raiz do projeto há um script para simular cliques. Execute o comando abaixo:
+```bash
+$ chmod +x simulate_click.sh
+$ ./simulate_click.sh
+```
+
 <br>
 
 ## Entendendo o Fluxo de Dados
@@ -135,3 +142,12 @@ A imagem abaixo mostra como os dados são armazenados e organizados depois de pe
 
 ![Data Flow](documentation/postgres.png)
 
+<br>
+
+## Outros Recursos
+> **Nota:** Para acessar esses recursos é necessário que todas as configurações tenham sido realizadas com sucesso.
+
+1. Gerenciamento do conectores do Kafka Connect
+ -  **Kafka Connect UI**: http://localhost:8084 
+2. Gerenciamento do esquemas das mensagens no Schema Registry
+-  **Schema Registry UI**: http://localhost:8086
