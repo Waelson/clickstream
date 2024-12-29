@@ -16,8 +16,6 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
 - **items-frontend**: Interface usada por usuários de e-commerce para interagir com os itens disponíveis.
 - **items-api**: Backend responsável por buscar itens e registrar cliques, chamando a **clickstream-api**.
 
----
-
 #### Clickstream Ecosystem
 - **clickstream-api**: Envia os eventos de cliques para o **Kafka**.
 - **Kafka**:
@@ -31,13 +29,9 @@ Os dados de Clickstream consistem em capturar os cliques e interações do usuá
     - Garante consistência e validação.
 - **Kafka Connect**: Consome dados agregados do Kafka e insere no banco de dados PostgreSQL.
 
----
-
 #### Metrics Dashboard
 - **Postgres**: Armazena dados agregados para persistência.
 - **Grafana**: Lê os dados do PostgreSQL e permite a visualização de métricas em dashboards acessados por usuários de marketing.
-
-___
 
 #### Monitoring & Management
 - **Connect UI**: Interface para gerenciar o Kafka Connect.
