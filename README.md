@@ -103,6 +103,8 @@ Siga os passos abaixo para configurar e importar o dashboard no Grafana:
 <br>
 
 ## Utilizando a Solução
+> **Nota:** Para acessar os recursos da solução, é necessário que todas as configurações tenham sido realizadas com sucesso.
+
 
 
 <br>
