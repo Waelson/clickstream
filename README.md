@@ -22,21 +22,25 @@ Esta solução é baseada em uma arquitetura moderna que utiliza ferramentas rob
 - **Docker**: Para containerização de todos os serviços, facilitando o deployment e a escalabilidade.
 - **Schema Registry**: Para gerenciamento de esquemas e validação de dados, garantindo a integridade das mensagens.
 
-## Inicializando & Configurando
-Para colocar a solução você precisa executar dois passos. Segue abaixo os detalhes:
+## Inicializando e Configurando a Solução
 
-1. Acesse o diretório raiz da solução e execute o docker-compose:
-`
+Siga os passos abaixo para inicializar e configurar a solução de Clickstream:
+
+### Passo 1: Subir os Contêineres com Docker Compose
+Acesse o diretório raiz da solução e execute o seguinte comando para construir e iniciar todos os contêineres:
+
+```bash
 docker-compose up --build
-`
-2. Após os docker-compose inicializar todos os container, execute os comandos abaixo:
-`
+```
+### Passo 2: Executar o Script de Configuração
+Após o Docker Compose inicializar todos os contêineres, conceda permissão de execução ao script de configuração e execute-o:
+```bash
 chmod +x setup.sh
-`
-
-`
 ./setup.sh
-`
+```
+Este script irá configurar os tópicos Kafka, streams e tabelas necessários para o funcionamento da solução.
+
+
 
 ## Fluxo de Dados
 ![Data Flow](documentation/data_flow.png)
